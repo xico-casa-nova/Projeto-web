@@ -1,0 +1,51 @@
+/* Custom tweaks for Backend AdminLTE */
+
+.not-set {
+    color: #dd4b39;
+    font-style: italic;
+}
+
+/* Add sorting icons to GridView sort links */
+a.asc:after, a.desc:after {
+    content: '';
+    left: 3px;
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border: solid 5px transparent;
+    margin: 4px 4px 2px 4px;
+    background: transparent;
+}
+
+a.asc:after {
+    border-bottom: solid 7px #333;
+    border-top-width: 0;
+}
+
+a.desc:after {
+    border-top: solid 7px #333;
+    border-bottom-width: 0;
+}
+
+.grid-view th {
+    white-space: nowrap;
+}
+
+.hint-block {
+    display: block;
+    margin-top: 5px;
+    color: #777;
+}
+
+.error-summary {
+    color: #a94442;
+    background: #f2dede;
+    border-left: 3px solid #ebccd1;
+    padding: 10px 20px;
+    margin: 0 0 15px 0;
+}
+
+/* Small adjustments to GridView within AdminLTE boxes */
+.box .grid-view {
+    padding: 10px;
+}
