@@ -6,6 +6,7 @@ namespace frontend\models;
 
 use common\models\User;
 use Yii;
+use yii\base\InvalidConfigException;
 use yii\base\Model;
 use yii\mail\MailerInterface;
 
@@ -63,7 +64,28 @@ class SignupForm extends Model
         $user->generateAuthKey();
         $user->generateEmailVerificationToken();
 
-        return $user->save() && $this->sendEmail($mailer, $user, $supportEmail, $appName);
+        $transaction = Yii::$app->db->beginTransaction();
+        try {
+            if (!$user->save()) {
+                $transaction->rollBack();
+                return false;
+            }
+
+            $role = Yii::$app->authManager->getRole('user');
+            if ($role === null) {
+                throw new InvalidConfigException('A role RBAC "user" não existe. Execute as migrations da aplicação.');
+            }
+
+            Yii::$app->authManager->assign($role, (string) $user->id);
+            $transaction->commit();
+        } catch (\Throwable $exception) {
+            if ($transaction->isActive) {
+                $transaction->rollBack();
+            }
+            throw $exception;
+        }
+
+        return $this->sendEmail($mailer, $user, $supportEmail, $appName);
     }
 
     /**

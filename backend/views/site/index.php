@@ -8,6 +8,19 @@ $this->title = 'Dashboard';
 ?>
 <div class="site-index">
 
+    <?php if (Yii::$app->user->can('manageUsers')): ?>
+        <div class="row">
+            <div class="col-xs-12">
+                <?= Html::a(
+                    '<i class="fa fa-users"></i> Gestão de utilizadores',
+                    ['/user/index'],
+                    ['class' => 'btn btn-primary btn-lg', 'encode' => false],
+                ) ?>
+            </div>
+        </div>
+        <br>
+    <?php endif ?>
+
     <!-- Small boxes (Stat box) -->
     <div class="row">
         <div class="col-lg-3 col-xs-6">

@@ -24,6 +24,7 @@ use yii\web\IdentityInterface;
  * @property int $created_at
  * @property int $updated_at
  * @property string $password write-only password
+ * @property UserDetail|null $userDetail
  */
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -231,7 +232,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function getRole(): string
     {
-        return $this->userDetail?->role ?? UserDetail::ROLE_USER;
+        return $this->userDetail->role ?? UserDetail::ROLE_USER;
     }
 
     public function isAdmin(): bool
