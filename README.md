@@ -62,6 +62,26 @@ cd advanced
     <img src="docs/images/backend/home-light.png" alt="Web Application Advanced - Backend">
 </picture>
 
+### Gestão de permissões (RBAC)
+
+O backend usa o `yii\rbac\DbManager`. Depois de configurar a ligação à base de dados, crie as tabelas RBAC com:
+
+```bash
+php yii migrate
+```
+
+Uma migration cria as roles `admin`, `gestor` e `user`, configura as permissões e regras e converte os perfis existentes de `user_details.role` em atribuições RBAC. Novos registos recebem a role `user`.
+
+| Role | Permissões |
+| --- | --- |
+| `admin` | Todas as permissões, incluindo gerir utilizadores, locais e RBAC. |
+| `gestor` | Ver pedidos pendentes e aceitar ou recusar pedidos. |
+| `user` | Criar pedidos de eventos e ver apenas eventos próprios. |
+
+As permissões `viewOwnEvents`, `acceptEventRequest` e `rejectEventRequest` usam regras que verificam, respetivamente, a propriedade do evento e se o pedido ainda está em `rascunho`. Por exemplo, um endpoint de eventos pode validar o acesso com `Yii::$app->user->can('createEvent')` ou `Yii::$app->user->can('viewOwnEvents', ['eventId' => $event->id])`.
+
+O projeto ainda não contém controllers/views para criar e processar pedidos de eventos; esses endpoints devem chamar as permissões acima e filtrar listagens por utilizador ou por pedidos pendentes. As atribuições RBAC ficam nas tabelas RBAC e são distintas do perfil legado em `user_details.role`. Utilizadores com `manageRbac` podem abrir **RBAC** no backend para gerir roles, permissões e atribuições.
+
 DIRECTORY STRUCTURE
 -------------------
 

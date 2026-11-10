@@ -10,7 +10,7 @@ use yii\grid\GridView;
 /** @var backend\models\UserSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Users';
+$this->title = 'Utilizadores';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-index">
@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create User', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Criar utilizador', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -33,17 +33,25 @@ $this->params['breadcrumbs'][] = $this->title;
             'username',
             'email:email',
             [
-                'attribute' => 'role',
                 'label' => 'Role',
                 'value' => function (User $model) {
-                    $role = $model->userDetail?->role;
-                    $badgeClass = match ($role) {
-                        'admin' => 'bg-danger',
-                        'gestor' => 'bg-warning text-dark',
-                        default => 'bg-secondary',
-                    };
-                    $label = $model->userDetail?->displayRole() ?? 'Sem Perfil';
-                    return Html::tag('span', Html::encode($label), ['class' => "badge {$badgeClass}"]);
+                    $labels = [
+                        'admin' => 'Administrador',
+                        'gestor' => 'Gestor',
+                        'user' => 'Utilizador',
+                    ];
+                    $badges = [];
+                    foreach (Yii::$app->authManager->getRolesByUser($model->id) as $role) {
+                        $badgeClass = match ($role->name) {
+                            'admin' => 'bg-danger',
+                            'gestor' => 'bg-warning text-dark',
+                            default => 'bg-secondary',
+                        };
+                        $label = $labels[$role->name] ?? $role->name;
+                        $badges[] = Html::tag('span', Html::encode($label), ['class' => "badge {$badgeClass}"]);
+                    }
+
+                    return $badges === [] ? 'Sem role RBAC' : implode(' ', $badges);
                 },
                 'format' => 'raw',
             ],
@@ -64,7 +72,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, User $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
-                 }
+                }
             ],
         ],
     ]); ?>
