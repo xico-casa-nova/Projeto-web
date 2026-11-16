@@ -21,6 +21,7 @@ AppAsset::register($this);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= Html::encode($this->title ?: 'EventLink - A sua festa merece um lugar à altura') ?></title>
     
+    <?php $this->registerCsrfMetaTags() ?>
     <?php $this->head() ?>
     <icon rel="icon" href="<?= Yii::$app->request->baseUrl ?>/logo.webp" type="image/x-icon">
     <!-- Bootstrap 5 CSS -->

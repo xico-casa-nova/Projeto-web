@@ -39,12 +39,6 @@
                         'url' => ['/user/index'],
                         'visible' => Yii::$app->user->can('manageUsers'),
                     ],
-                    [
-                        'label' => 'RBAC',
-                        'icon' => 'lock',
-                        'url' => ['/rbac/index'],
-                        'visible' => Yii::$app->user->can('manageRbac'),
-                    ],
                     ['label' => 'Login', 'url' => ['site/login'], 'visible' => Yii::$app->user->isGuest],
                     [
                         'label' => 'Some tools',
