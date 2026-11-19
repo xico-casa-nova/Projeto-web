@@ -88,7 +88,12 @@ class SiteController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+            if (Yii::$app->user->can('admin') || Yii::$app->user->can('gestor')) {
+                return $this->goBack();
+            }
+
+            Yii::$app->user->logout();
+            $model->addError('username', 'A sua conta não tem permissão para aceder ao painel de administração.');
         }
 
         $model->password = '';
