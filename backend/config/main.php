@@ -12,7 +12,11 @@ return [
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
-    'modules' => [],
+    'modules' => [
+        'api' => [
+            'class' => 'backend\modules\api\ModuleAPI',
+        ],
+    ],
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-backend',
@@ -41,7 +45,24 @@ return [
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            'rules' => [],
+            'rules' => [
+                ['class' => 'yii\rest\UrlRule', 'controller' => 'api/user'],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => [
+                        'api/fatura',
+                        'api/fatura-linha',
+                        'api/local',
+                        'api/local-foto',
+                        'api/produto',
+                        'api/tipo-evento',
+                        'api/evento',
+                        'api/user-detail',
+                    ],
+                    'pluralize' => false,
+                ],
+
+            ],
         ],
     ],
     'params' => $params,
