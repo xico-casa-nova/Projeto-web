@@ -100,11 +100,11 @@ $labelOptions = ['class' => 'form-label fw-semibold small'];
                         ])->passwordInput()->label('Your Password', $labelOptions) ?>
                     </div>
 
-                    <div class="d-grid">
+                    <div class="d-grid mb-3">
                         <?= Html::submitButton(
-                            'Signup',
+                            'Registar',
                             [
-                                'class' => 'btn login-btn btn-lg rounded-3 text-white',
+                                'class' => 'btn btn-primary btn-lg rounded-3',
                                 'name' => 'signup-button',
                             ],
                         ) ?>

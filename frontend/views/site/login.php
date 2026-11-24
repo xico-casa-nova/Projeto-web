@@ -94,24 +94,17 @@ $labelOptions = ['class' => 'form-label fw-semibold small'];
                         <?= $form->field($model, 'rememberMe')->checkbox() ?>
                     </div>
 
-                    <div class="d-grid">
+                    <div class="d-grid mb-3">
                         <?= Html::submitButton(
                             'Login',
                             [
-                                'class' => 'btn login-btn btn-lg rounded-3 text-white',
+                                'class' => 'btn btn-primary btn-lg rounded-3',
                                 'name' => 'login-button',
                             ],
                         ) ?>
                     </div>
 
                     <?php ActiveForm::end(); ?>
-
-                    <div class="text-body-secondary text-center mt-3 small">
-                        <?= Html::a('Forgot your password?', ['site/request-password-reset']) ?>
-                        <span class="mx-1">&middot;</span>
-                        <?= Html::a('Resend verification email', ['site/resend-verification-email']) ?>
-                    </div>
-
                 </div>
             </div>
 
