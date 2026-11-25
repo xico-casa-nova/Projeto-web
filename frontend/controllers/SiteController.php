@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace frontend\controllers;
 
 use common\models\LoginForm;
+use common\models\Local;
 use frontend\models\ContactForm;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResendVerificationEmailForm;
@@ -168,6 +169,42 @@ class SiteController extends Controller
     public function actionAbout(): string
     {
         return $this->render('about');
+    }
+
+    /*public function actionEspacos(): string
+    {
+
+        return $this->render('espacos');
+    }*/
+
+    public function actionEspacos(): string
+    {
+
+        $request = Yii::$app->request;
+        $cidade = trim((string)$request->get('cidade', ''));
+        $capacidadeMin = (int)$request->get('capacidade', 0);
+
+        $query = Local::find() //Manda ir buscar os locais na base de dados ao ir ao model Local.php
+            ->with(['localFotos' => function ($query) {
+                $query->orderBy(['ordem' => SORT_ASC]);
+            }])
+            ->where(['ativo' => 1]);
+
+        if ($cidade !== '') {
+            $query->andWhere(['like', 'cidade', $cidade]);
+        }
+
+        if ($capacidadeMin > 0) {
+            $query->andWhere(['>=', 'capacidade_total', $capacidadeMin]);
+        }
+
+        $locais = $query->orderBy(['nome' => SORT_ASC])->all();
+
+        return $this->render('espacos', [
+            'locais' => $locais,
+            'cidade' => $cidade,
+            'capacidadeMin' => $capacidadeMin,
+        ]);
     }
 
     /**
