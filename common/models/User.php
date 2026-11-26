@@ -71,9 +71,9 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * {@inheritdoc}
      */
-    public static function findIdentityByAccessToken($token, $type = null): never
+    public static function findIdentityByAccessToken($token, $type = null) // autenticação por query parameter
     {
-        throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
+        return static::findOne(['auth_key' => $token, 'status' => self::STATUS_ACTIVE]);
     }
 
     /**
@@ -120,6 +120,8 @@ class User extends ActiveRecord implements IdentityInterface
             ],
         );
     }
+
+    
 
     /**
      * Finds out if password reset token is valid
@@ -244,4 +246,5 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return $this->getRole() === UserDetail::ROLE_GESTOR;
     }
+
 }
